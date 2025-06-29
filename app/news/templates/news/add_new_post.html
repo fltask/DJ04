@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 <title>Страница для добавления новостей</title>
@@ -17,50 +18,56 @@
                     </h2>
                 </div>
                 <div class="card-body p-4">
+                    {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Пожалуйста, исправьте ошибки в форме:
+                        <ul class="mb-0 mt-2">
+                            {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
                     <form method="post">
                         {% csrf_token %}
 
                         <div class="mb-3">
-                            <label for="title" class="form-label fw-bold">
+                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">
                                 <i class="bi bi-type-h1 me-2"></i>Заголовок новости
                             </label>
-                            <input type="text" class="form-control form-control-lg" id="title" name="title"
-                                placeholder="Введите заголовок новости" required>
-                                {{ form.title }}
+                            {{ form.title }}
+                            <div class="form-text">
+                                <span id="title-count">0</span>/{{ title_max_length }} символов
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="short_description" class="form-label fw-bold">
+                            <label for="{{ form.short_description.id_for_label }}" class="form-label fw-bold">
                                 <i class="bi bi-card-text me-2"></i>Краткое описание
                             </label>
-                            <input type="text" class="form-control" id="short_description" name="short_description"
-                                placeholder="Краткое описание новости" required>
                             {{ form.short_description }}
+                            <div class="form-text">
+                                <span id="description-count">0</span>/{{ description_max_length }} символов
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="content" class="form-label fw-bold">
+                            <label for="{{ form.text.id_for_label }}" class="form-label fw-bold">
                                 <i class="bi bi-file-text me-2"></i>Содержание новости
                             </label>
-                            <textarea class="form-control" id="content" name="content" rows="6"
-                                placeholder="Введите полное содержание новости..." required></textarea>
                             {{ form.text }}
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="date" class="form-label fw-bold">
-                                    <i class="bi bi-calendar me-2"></i>Дата публикации
+                            <div class="col-12">
+                                <label for="{{ form.pub_date.id_for_label }}" class="form-label fw-bold">
+                                    <i class="bi bi-calendar me-2"></i>Дата и время публикации
                                 </label>
-                                <input type="date" class="form-control" id="date" name="date" required>
                                 {{ form.pub_date }}
-                            </div>
-                            <div class="col-md-6">
-                                <label for="time" class="form-label fw-bold">
-                                    <i class="bi bi-clock me-2"></i>Время публикации
-                                </label>
-                                <input type="time" class="form-control" id="time" name="time" required>
-                                {{ form.author }}
                             </div>
                         </div>
 
@@ -80,4 +87,13 @@
         </div>
     </div>
 </div>
+
+<!-- Передаем значения maxlength в JavaScript -->
+<script>
+    window.titleMaxLength = {{ title_max_length }};
+    window.descriptionMaxLength = {{ description_max_length }};
+</script>
+
+<!-- Подключаем внешний JavaScript файл -->
+<script src="{% static 'news/js/character-counter.js' %}"></script>
 {% endblock %}
