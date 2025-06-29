@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Страница для добавления новостей</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Добавление новости
+                    </h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-bold">
+                                <i class="bi bi-type-h1 me-2"></i>Заголовок новости
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="title" name="title"
+                                placeholder="Введите заголовок новости" required>
+                                {{ form.title }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="short_description" class="form-label fw-bold">
+                                <i class="bi bi-card-text me-2"></i>Краткое описание
+                            </label>
+                            <input type="text" class="form-control" id="short_description" name="short_description"
+                                placeholder="Краткое описание новости" required>
+                            {{ form.short_description }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="content" class="form-label fw-bold">
+                                <i class="bi bi-file-text me-2"></i>Содержание новости
+                            </label>
+                            <textarea class="form-control" id="content" name="content" rows="6"
+                                placeholder="Введите полное содержание новости..." required></textarea>
+                            {{ form.text }}
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label fw-bold">
+                                    <i class="bi bi-calendar me-2"></i>Дата публикации
+                                </label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                                {{ form.pub_date }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="time" class="form-label fw-bold">
+                                    <i class="bi bi-clock me-2"></i>Время публикации
+                                </label>
+                                <input type="time" class="form-control" id="time" name="time" required>
+                                {{ form.author }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Опубликовать новость
+                            </button>
+                            <a href="{% url 'news:news_home' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Вернуться к списку новостей
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
