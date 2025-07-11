@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Страница для добавления рецензий на фильм</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{% url 'films:films_home' %}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left me-1"></i>Назад
+                </a>
+                <h2 class="mb-0">
+                    <i class="bi bi-plus-circle text-primary me-2"></i>
+                    Добавить отзыв на фильм
+                </h2>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Заполните информацию о фильме
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-film me-1 text-primary"></i>
+                                {{ form.title.label }}
+                            </label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.title.errors %}
+                                <small><i class="bi bi-exclamation-triangle me-1"></i>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-info-circle me-1 text-info"></i>
+                                {{ form.description.label }}
+                            </label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.description.errors %}
+                                <small><i class="bi bi-exclamation-triangle me-1"></i>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.review.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-chat-quote me-1 text-success"></i>
+                                {{ form.review.label }}
+                            </label>
+                            {{ form.review }}
+                            {% if form.review.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.review.errors %}
+                                <small><i class="bi bi-exclamation-triangle me-1"></i>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'films:films_home' %}" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-x-circle me-1"></i>Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i>Добавить отзыв
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
